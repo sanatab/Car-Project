@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <!-- font-awesome/6.2.1/css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
+    <!--Stylesheet-->
+    <link rel="stylesheet" href="signup.css" />
+    <title>Signup Page</title>
+    <script src="script.js" defer></script>
+    <style>
+      .pass-box {
+        position: relative;
+      }
+      .fa {
+        position: absolute;
+        right: 10px;
+        margin-top: -30px;
+        cursor: pointer;
+      }
+
+      #passInfo {
+        position: absolute;
+        width: 270px;
+        padding: 25px;
+        background-color: rgba(255, 255, 255, 0.13);
+        border-radius: 5px;
+        z-index: 55;
+        margin-left: 450px;
+        margin-top: -130px;
+      }
+      #passInfo ul li {
+        list-style-type: none;
+      }
+
+      #passInfo ul li .fa {
+        /* margin-left: -120px; */
+        margin-top: 4px;
+        margin-right: 240px;
+      }
+      .hide {
+        display: none;
+      }
+      .invalid {
+        color: #ec3f41;
+      }
+      .valid {
+        color: #12ab63;
+      }
+      form .error input {
+        border: 2px solid red;
+      }
+      form .error span {
+        color: red;
+        display: block;
+      }
+      form span {
+        display: none;
+      }
+      form .success span {
+        color: #0b0;
+      }
+      form .success input {
+        border: 2px solid #0b0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+    <form>
+      <h3>Signup Here</h3>
+
+      <div class="">
+        <label for="username">Username</label>
+        <input type="text" placeholder="Username" name="username" id="username" required />
+        <span></span>
+      </div>
+
+      <div class="">
+        <label for="email">Email</label>
+        <input type="email" placeholder="Email or Phone" name="email" id="email" required />
+        <span></span>
+      </div>
+
+      <div class="pass-box">
+        <label for="password1">Password</label>
+        <input type="password" placeholder="Password" id="password1" name="password1" required />
+        <i class="fa fa-eye-slash" id="eye1" aria-hidden="true"></i>
+        <span></span>
+      </div>
+
+      <div class="pass-box">
+        <label for="password2">Conform Password</label>
+        <input type="password" placeholder="Conform Password" id="password2" name="password2" required />
+        <i class="fa fa-eye-slash" id="eye2" aria-hidden="true"></i>
+        <span></span>
+      </div>
+
+      <div id="passInfo" class="hide">
+        <h4>Password must contain:</h4>
+        <ul>
+          <li id="capital" class="invalid"><i class="fa fa-times" id="" aria-hidden="true"></i> At least one capital letter</li>
+          <li id="small" class="invalid"><i class="fa fa-times" id="" aria-hidden="true"></i> At least one small</li>
+          <li id="number" class="invalid"><i class="fa fa-times" id="" aria-hidden="true"></i> At least one number</li>
+          <li id="length" class="invalid"><i class="fa fa-times" id="" aria-hidden="true"></i> At least 8 characters</li>
+        </ul>
+      </div>
+
+      <button type="submit" id="submit">Signup</button>
+      <a href="login.html">Already have an account ?</a>
+    </form>
+  </body>
+
+  <script>
+    let pass1 = document.getElementById("password1");
+    document.getElementById("eye1").addEventListener("click", function () {
+      if (pass1.type == "password") {
+        pass1.type = "text";
+        this.classList.add("fa-eye");
+        this.classList.remove("fa-eye-slash");
+      } else {
+        pass1.type = "password";
+        this.classList.remove("fa-eye");
+        this.classList.add("fa-eye-slash");
+      }
+    });
+    let pass2 = document.getElementById("password2");
+    document.getElementById("eye2").addEventListener("click", function () {
+      if (pass2.type == "password") {
+        pass2.type = "text";
+        this.classList.add("fa-eye");
+        this.classList.remove("fa-eye-slash");
+      } else {
+        pass2.type = "password";
+        this.classList.remove("fa-eye");
+        this.classList.add("fa-eye-slash");
+      }
+    });
+
+    pass1.addEventListener("keyup", function () {
+      validate(pass1.value);
+    });
+
+    pass1.addEventListener("focus", function () {
+      RemoveClass("passInfo", "hide");
+    });
+    pass1.addEventListener("blur", function () {
+      AddClass("passInfo", "hide");
+    });
+
+    function validate(pswd) {
+      // let lengthOf = document.getElementById('length');
+      if (pswd.length >= 8) {
+        valid("length");
+      } else {
+        invalid("length");
+      }
+
+      if (pswd.match(/[a-z]/)) {
+        valid("small");
+      } else {
+        invalid("small");
+      }
+      if (pswd.match(/[A-Z]/)) {
+        valid("capital");
+      } else {
+        invalid("capital");
+      }
+      if (pswd.match(/[0-9]/)) {
+        valid("number");
+      } else {
+        invalid("number");
+      }
+    }
+
+    function valid(id) {
+      AddClass(id, "valid");
+      RemoveClass(id, "invalid");
+      AddClassOnIcon(id, "fa-check");
+      RemoveClassOnIcon(id, "fa-times");
+    }
+
+    function invalid(id) {
+      AddClass(id, "invalid");
+      RemoveClass(id, "valid");
+      RemoveClassOnIcon(id, "fa-check");
+      AddClassOnIcon(id, "fa-times");
+    }
+
+    function AddClass(id, cl) {
+      document.getElementById(id).classList.add(cl);
+    }
+
+    function RemoveClass(id, cl) {
+      document.getElementById(id).classList.remove(cl);
+    }
+
+    function AddClassOnIcon(id, cl) {
+      document.getElementById(id).firstChild.classList.add(cl);
+    }
+    function RemoveClassOnIcon(id, cl) {
+      document.getElementById(id).firstChild.classList.remove(cl);
+    }
+  </script>
+</html>
